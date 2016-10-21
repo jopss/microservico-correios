@@ -1,0 +1,28 @@
+
+INSERT INTO main.uf VALUES (1, 'AC', 'Acre', NULL, NULL);
+INSERT INTO main.uf VALUES (2, 'AL', 'Alagoas', NULL, NULL);
+INSERT INTO main.uf VALUES (3, 'AM', 'Amazonas', NULL, NULL);
+INSERT INTO main.uf VALUES (4, 'AP', 'Amapá', NULL, NULL);
+INSERT INTO main.uf VALUES (5, 'BA', 'Bahia', NULL, NULL);
+INSERT INTO main.uf VALUES (6, 'CE', 'Ceará', NULL, NULL);
+INSERT INTO main.uf VALUES (7, 'DF', 'Distrito Federal', NULL, NULL);
+INSERT INTO main.uf VALUES (8, 'ES', 'Espírito Santo', NULL, NULL);
+INSERT INTO main.uf VALUES (9, 'GO', 'Goiás', NULL, NULL);
+INSERT INTO main.uf VALUES (10, 'MA', 'Maranhão', NULL, NULL);
+INSERT INTO main.uf VALUES (11, 'MG', 'Minas Gerais', NULL, NULL);
+INSERT INTO main.uf VALUES (12, 'MS', 'Mato Grosso do Sul', NULL, NULL);
+INSERT INTO main.uf VALUES (13, 'MT', 'Mato Grosso', NULL, NULL);
+INSERT INTO main.uf VALUES (14, 'PA', 'Pará', NULL, NULL);
+INSERT INTO main.uf VALUES (15, 'PB', 'Paraíba', NULL, NULL);
+INSERT INTO main.uf VALUES (16, 'PE', 'Pernambuco', NULL, NULL);
+INSERT INTO main.uf VALUES (17, 'PI', 'Piauí', NULL, NULL);
+INSERT INTO main.uf VALUES (18, 'PR', 'Paraná', NULL, NULL);
+INSERT INTO main.uf VALUES (19, 'RJ', 'Rio de Janeiro', NULL, NULL);
+INSERT INTO main.uf VALUES (20, 'RN', 'Rio Grande do Norte', NULL, NULL);
+INSERT INTO main.uf VALUES (21, 'RO', 'Rondônia', NULL, NULL);
+INSERT INTO main.uf VALUES (22, 'RR', 'Roraima', NULL, NULL);
+INSERT INTO main.uf VALUES (23, 'RS', 'Rio Grande do Sul', NULL, NULL);
+INSERT INTO main.uf VALUES (24, 'SC', 'Santa Catarina', NULL, NULL);
+INSERT INTO main.uf VALUES (25, 'SE', 'Sergipe', NULL, NULL);
+INSERT INTO main.uf VALUES (26, 'SP', 'São Paulo', NULL, NULL);
+INSERT INTO main.uf VALUES (27, 'TO', 'Tocantins', NULL, NULL);

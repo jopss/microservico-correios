@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:data="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd" >
+
+        <context:component-scan base-package="br.com.jopss.microservico.correios.dominio"/>
+	<context:annotation-config />
+        
+        <bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+                <property name="ignoreResourceNotFound" value="true"/>
+                <property name="localOverride" value="true"/>
+                <property name="locations">
+                        <list>
+                                <value>classpath:env/environment_DESENVOLVIMENTO.properties</value>
+                                <value>classpath:env/environment_${CONFIG_SISTEMA}.properties</value>
+                        </list>
+                </property>
+        </bean>
+        <bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+                <property name="ignoreResourceNotFound" value="true" />
+                <property name="ignoreUnresolvablePlaceholders" value="true" />
+                <property name="localOverride" value="true" />
+                <property name="properties" ref="properties" />
+        </bean>
+        
+	<bean id="appContextUtil" class="br.com.jopss.microservico.correios.infra.AppContextUtil" />
+        
+	<bean id="resourceBundleMessageSourceValidator" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="org.hibernate.validator.ValidationMessages_pt_BR" />
+	</bean>
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource" ref="resourceBundleMessageSourceValidator" />
+	</bean>
+        
+	<!-- o tramite deve ficar na web pois o @Transaction esta no controlador -->
+        <tx:annotation-driven transaction-manager="main_transactionManager" proxy-target-class="true"/>
+
+	<!-- ********************** -->
+	<!--         MAIN           -->
+	<!-- ********************** -->
+	<bean id="flyway" class="com.googlecode.flyway.core.Flyway" init-method="migrate">
+		<property name="dataSource" ref="main_dataSource" />
+		<property name="disableInitCheck" value="true" />
+		<property name="schemas" value="main" />
+	</bean>
+	<bean id="main_dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${db.main.driver}" />
+		<property name="jdbcUrl" value="${db.main.url}" />
+		<property name="user" value="${db.main.username}" />
+		<property name="password" value="${db.main.password}" />
+		
+		<property name="maxPoolSize" value="${db.main.max_pool_size}" />
+		<property name="minPoolSize" value="${db.main.min_pool_size}" />
+		<property name="acquireIncrement" value="${db.main.acquire_increment}" />
+		<property name="maxConnectionAge" value="${db.main.max_connection_age}" />
+		<property name="maxStatements" value="${db.main.max_statements}" />
+		<property name="maxIdleTime" value="${db.main.max_idle_time}" />
+	</bean>
+	<bean id="main_entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="${db.main.pu}" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="databasePlatform" value="${db.main.dialect}" />
+			</bean>
+		</property>
+		<property name="packagesToScan" value="br.com.jopss.microservico.correios.beans" />
+		<property name="persistenceUnitManager">
+			<bean class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+				<property name="defaultDataSource" ref="main_dataSource" />
+				<property name="persistenceXmlLocation" value="classpath*:META-INF/persistence.xml" />
+			</bean>
+		</property>
+	</bean>
+	<bean id="main_transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="main_entityManagerFactory" />
+	</bean>
+        
+	<data:repositories base-package="br.com.jopss.microservico.correios.dominio.repositorio" entity-manager-factory-ref="main_entityManagerFactory" transaction-manager-ref="main_transactionManager" />
+</beans>
